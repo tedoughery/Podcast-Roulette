@@ -1,5 +1,6 @@
 package com.backend.podcastRoulette;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,12 @@ import java.net.URI;
 @RequestMapping("/podcastRoulette")
 @CrossOrigin("http://localhost:4200")
 public class PodcastController {
-    private static String clientID;
-    private static String clientSecret;
+    private static final Dotenv dotenv = Dotenv
+            .configure()
+            .load();
+
+    private static final String clientID = dotenv.get("CLIENT_ID");
+    private static final String clientSecret = dotenv.get("CLIENT_SECRET");
 
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/podcastRoulette/getUserCode");
 
