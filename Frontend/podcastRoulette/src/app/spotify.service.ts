@@ -19,4 +19,12 @@ export class SpotifyService {
     return this.httpClient.get(loginUrl, {headers, responseType: 'text'});
   }
 
+  getPodcast(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    });
+    const podUrl = `${this.url}/getPodcast`;
+    return this.httpClient.get(podUrl, {headers});
+  }
 }

@@ -14,6 +14,7 @@ import se.michaelthelin.spotify.model_objects.specification.SavedShow;
 
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
+import se.michaelthelin.spotify.requests.data.library.GetUsersSavedShowsRequest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -60,7 +61,21 @@ public class PodcastController {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-        response.sendRedirect("http://localhost:4200/login"); //TODO: replace with actual podcast code when it's ready to go
+        response.sendRedirect("http://localhost:4200/podcast"); //TODO: replace with actual podcast code when it's ready to go
         return spotApi.getAccessToken();
+    }
+
+    //Just gets whatever podcasts the user has saved
+    //TODO: implement a function to random a given podcast's episodes and return a selection
+    @GetMapping("/getPodcast")
+    public SavedShow[] getPodcast() {
+        final GetUsersSavedShowsRequest getShowsReq = spotApi.getUsersSavedShows().build();
+        try {
+            final Paging<SavedShow> showPaging = getShowsReq.execute();
+            return showPaging.getItems();
+        } catch (Exception e) {
+            System.out.println("Error:" + e.getMessage());
+        }
+        return new SavedShow[0];
     }
 }
